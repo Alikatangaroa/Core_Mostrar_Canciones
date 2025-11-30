@@ -3,13 +3,17 @@ package com.TiareCanceco.canciones.controladores;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+
 import com.TiareCanceco.canciones.modelos.Cancion;
 
-
-
 import com.TiareCanceco.canciones.servicios.ServicioCanciones;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class ControladorCanciones {
@@ -27,19 +31,38 @@ public class ControladorCanciones {
     // Metodo para mostrar el detalle cancion segun su ID
     @GetMapping("/canciones/detalle/{idCancion}")
     public String detalle(@PathVariable Long idCancion, Model modelo) {
-        Cancion cancion = servicio.obtenerCancionPorId(idCancion);
-
-        System.out.println("CREATED AT → " + cancion.getFechaCreacion());
-        System.out.println("UPDATED AT → " + cancion.getFechaActualizacion());
-        
-        
-        
+        Cancion cancion = servicio.obtenerCancionPorId(idCancion); 
+        if(cancion == null){
+            return "redirect:/canciones";
+        }      
         modelo.addAttribute("cancion", servicio.obtenerCancionPorId(idCancion));
         return "detalleCancion.jsp";
-
         
     }
 
+    // Formulario
+
+    @GetMapping("/canciones/formulario/agregar")
+    public String formularioAgregarCancion(@ModelAttribute("cancion") Cancion cancion) {
+        return "agregarCancion.jsp";
+    }
+
+    @PostMapping("/canciones/procesa/agregar")
+    public String procesarAgregarCancion(
+        @Valid @ModelAttribute("cancion") Cancion cancion,
+        BindingResult result) {
+    if (result.hasErrors()) {
+        return "agregarCancion.jsp";
+    }
+    servicio.agregarCancion(cancion);
+    return "redirect:/canciones";
+    }
+
+    @GetMapping("/canciones/formulario/agregar/{idCancion}")
+    public String formularioAgregarCancionConId(@PathVariable Long idCancion,
+                                                @ModelAttribute("cancion")Cancion cancion){
+        return "agregarCancion.jsp";
+    }
     
 
 }
