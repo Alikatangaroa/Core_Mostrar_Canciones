@@ -6,6 +6,7 @@ import com.TiareCanceco.canciones.modelos.Cancion;
 import java.util.List;
 
 
+
 @Service
 public class ServicioCanciones {
 
@@ -21,6 +22,10 @@ public class ServicioCanciones {
     }
 
     public Cancion agregarCancion(Cancion cancion) {
+        return repo.save(cancion);
+    }
+
+    public Cancion actualizaCancion(Cancion cancion){
         return repo.save(cancion);
     }
 }

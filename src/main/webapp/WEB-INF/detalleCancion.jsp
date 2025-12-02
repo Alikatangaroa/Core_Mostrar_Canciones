@@ -61,6 +61,9 @@
                 </td>
             </tr>
         </table>
+        <br>
+        <a href="/canciones/formulario/editar/${cancion.id}">Actualizar canción</a>
+
     </c:when>
 
     <c:otherwise>
