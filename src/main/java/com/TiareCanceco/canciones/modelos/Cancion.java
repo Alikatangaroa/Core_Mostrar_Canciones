@@ -3,12 +3,16 @@ package com.TiareCanceco.canciones.modelos;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.NotBlank;
+
 import jakarta.validation.constraints.Size;
 
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -22,17 +26,18 @@ import java.time.LocalDateTime;
 @Table(name = "canciones")
 public class Cancion {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
         
         @NotBlank(message="El título es obligatorio")
         @Size(min=5, message="El título debe tener al menos 5 caracteres")
         private String titulo;
 
-        @NotBlank(message="El artista es obligatorio")
-        @Size(min=3, message="El artista debe tener al menos 3 caracteres")
-        private String artista;
+        
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "artista_id")
+        private Artista artista;
 
         @NotBlank(message="El album es obligatorio")
         @Size(min=3, message="El album debe tener al menos 3 caracteres")
@@ -82,11 +87,11 @@ public class Cancion {
         this.titulo = titulo;
         }
 
-    public String getArtista() {
+    public Artista getArtista() {
         return artista;
         }
 
-    public void setArtista(String artista) {
+    public void setArtista(Artista artista) {
         this.artista = artista;
         }
 

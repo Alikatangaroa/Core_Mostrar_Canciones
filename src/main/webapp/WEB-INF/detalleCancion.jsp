@@ -27,7 +27,7 @@
 
                 <tr>
                     <th>Artista</th>
-                    <td>${cancion.artista}</td>
+                    <td>${cancion.artista.nombre} ${cancion.artista.apellido}</td>
                 </tr>
 
                 <tr>
